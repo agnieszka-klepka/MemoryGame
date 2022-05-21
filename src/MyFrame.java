@@ -2,9 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class MyFrame extends JFrame implements ActionListener {
     JTextField tf;
+    JPanel panel2;
 
     MyFrame(String name){
         this.setTitle(name);
@@ -25,43 +29,64 @@ public class MyFrame extends JFrame implements ActionListener {
         menu1.add(menu11);
         menu1.add(menu22);
 
+        // Creating the panel2 to store buttons
+
+        panel2 = new JPanel();
+
+        // Creating fields with images
+
+        ImageIcon image1 = new ImageIcon("src/sun1.jpg");
+        ImageIcon image1_1 = new ImageIcon("src/sun2.jpg");
+        ImageIcon image2 = new ImageIcon("src/storm1.jpg");
+        ImageIcon image2_1 = new ImageIcon("src/storm2.jpg");
+        ImageIcon image3 = new ImageIcon("src/nature1.jpg");
+        ImageIcon image3_1 = new ImageIcon("src/nature2.jpg");
+        ImageIcon image4 = new ImageIcon("src/fire1.jpg");
+        ImageIcon image4_1 = new ImageIcon("src/fire2.jpg");
+
+        ArrayList<ImageIcon> images = new ArrayList<>();
+
+        images.add(image1);
+        images.add(image1_1);
+        images.add(image2);
+        images.add(image2_1);
+        images.add(image3);
+        images.add(image3_1);
+        images.add(image4);
+        images.add(image4_1);
+
         // Creating the buttons
+        // List with our buttons -- to draw buttons
 
-        JPanel panel2 = new JPanel();
+        JButton[] button = new JButton[8];
 
-        ImageIcon image1 = new ImageIcon("src/ace_of_cups.png");
+        for (int i = 0; i < 8; i++) {
 
-        JButton button1 = new JButton(image1);
-        JButton button2 = new JButton("2");
-        JButton button3 = new JButton("3");
-        JButton button4 = new JButton("4");
-        JButton button5 = new JButton("5");
-        JButton button6 = new JButton("6");
-        JButton button7 = new JButton("7");
-        JButton button8 = new JButton("8");
+            button[i] = new JButton("");
+            button[i].setPreferredSize(new Dimension(150, 200));
 
-        button1.setPreferredSize(new Dimension(150, 200));
-        button2.setPreferredSize(new Dimension(150, 200));
-        button3.setPreferredSize(new Dimension(150, 200));
-        button4.setPreferredSize(new Dimension(150, 200));
-        button5.setPreferredSize(new Dimension(150, 200));
-        button6.setPreferredSize(new Dimension(150, 200));
-        button7.setPreferredSize(new Dimension(150, 200));
-        button8.setPreferredSize(new Dimension(150, 200));
+        }
+
+        // Randomly saving images to buttons
+        
+        Random random = new Random();
+        for(int i = 0; i < 8; i++) {
+            int n = random.nextInt(images.size());
+            button[i] = new JButton(images.get(n));
+            images.remove(n);
+        }
+
+        // The panel2 settings
 
         panel2.setLayout(new GridLayout(2, 4));
 
-        panel2.add(button1);
-        panel2.add(button2);
-        panel2.add(button3);
-        panel2.add(button4);
-        panel2.add(button5);
-        panel2.add(button6);
-        panel2.add(button7);
-        panel2.add(button8);
+        for(int i = 0; i < 8; i++) {
+            panel2.add(button[i]);
+        }
 
 
-        //Creating the panel at bottom and adding components
+
+        //Creating the panel1 at bottom and adding components
         JPanel panel1 = new JPanel(); // the panel is not visible in output
         JLabel label = new JLabel("Enter your name");
         tf = new JTextField(10); // accepts up to 10 characters
@@ -80,7 +105,6 @@ public class MyFrame extends JFrame implements ActionListener {
         this.getContentPane().add(BorderLayout.CENTER, panel2);
         this.getContentPane().add(BorderLayout.NORTH, menuBar);
         this.setVisible(true);
-
     }
 
     @Override
