@@ -10,10 +10,13 @@ public class MyFrame extends JFrame implements ActionListener {
     JTextField tf;
     JPanel panel2;
 
+    // Here we have implemented a window with the draw layout of card
+
     MyFrame(String name){
         this.setTitle(name);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1200, 1200);
+        this.setSize(1000, 1000);
+        this.setResizable(false);
 
         //Creating the MenuBar and adding components
         JMenuBar menuBar = new JMenuBar();
@@ -63,7 +66,7 @@ public class MyFrame extends JFrame implements ActionListener {
         for (int i = 0; i < 8; i++) {
 
             button[i] = new JButton("");
-            button[i].setPreferredSize(new Dimension(150, 200));
+            button[i].setPreferredSize(new Dimension(130, 150));
 
         }
 
@@ -84,21 +87,33 @@ public class MyFrame extends JFrame implements ActionListener {
             panel2.add(button[i]);
         }
 
-
+        button[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("it works!");
+            }
+        });
 
         //Creating the panel1 at bottom and adding components
         JPanel panel1 = new JPanel(); // the panel is not visible in output
         JLabel label = new JLabel("Enter your name");
+        JLabel timeLabel = new JLabel("Your current time");
         tf = new JTextField(10); // accepts up to 10 characters
+        JTextField timeField = new JTextField(20);      // NA PRZYSZLE LICZENIE CZASU
         JButton start = new JButton("START");
 
         start.addActionListener(this);
 
+        panel1.setSize(new Dimension(1200, 100));
         panel1.add(label); // Components Added using Flow Layout
         panel1.add(tf);
         panel1.add(start);
+        panel1.add(timeLabel);
+        panel1.add(timeField);
         String input = tf.getText();
+        String timeCouting = tf.getText();
         System.out.println(input);
+        System.out.println(timeCouting);
 
         //Adding Components to the frame.
         this.getContentPane().add(BorderLayout.SOUTH, panel1);
