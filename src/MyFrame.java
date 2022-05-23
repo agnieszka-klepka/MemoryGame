@@ -1,12 +1,14 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Random;
 
 public class MyFrame extends JFrame implements ActionListener {
+    public static JButton[] button;
     JTextField tf;
     JPanel panel2;
 
@@ -87,12 +89,35 @@ public class MyFrame extends JFrame implements ActionListener {
             panel2.add(button[i]);
         }
 
+        // trying to change an image if button is pressed
+
         button[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("it works!");
+                button[1].setIcon(new ImageIcon("src/sun1.jpg"));
+                System.out.println("button 1 is pressed");
             }
         });
+        button[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button[2].setIcon(new ImageIcon("src/sun1.jpg"));
+                System.out.println("button 1 is pressed");
+            }
+        });button[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button[3].setIcon(new ImageIcon("src/sun1.jpg"));
+                System.out.println("button 1 is pressed");
+            }
+        });button[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button[4].setIcon(new ImageIcon("src/sun1.jpg"));
+                System.out.println("button 1 is pressed");
+            }
+        });
+
 
         //Creating the panel1 at bottom and adding components
         JPanel panel1 = new JPanel(); // the panel is not visible in output

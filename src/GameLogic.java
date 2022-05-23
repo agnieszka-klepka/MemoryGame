@@ -1,12 +1,11 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameLogic extends JFrame implements Runnable{
 
     GameLogic(){        // tu bedziemy sobie logike gry rozpisywac i moze tworzyc tez tableLayout?
         System.out.println("is thread working?");
-
-        // Uncover and hide cards
-
 
     }
 
@@ -16,10 +15,8 @@ public class GameLogic extends JFrame implements Runnable{
 
     }
 
-    public void run2() {
+    public static void run2() {
         System.out.println("run2");
     }
-
-
 
 }
