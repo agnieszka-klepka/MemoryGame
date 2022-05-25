@@ -1,5 +1,3 @@
-import org.w3c.dom.ls.LSOutput;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,10 +10,21 @@ public class MyFrame extends JFrame implements ActionListener {
     JTextField tf;
     JTextArea ta;
     JPanel panel2;
-    ImageIcon startImage;
+
     long time = 0;
 
-    // Here we have implemented a window with the draw layout of card
+    ImageIcon startImage;
+    ImageIcon image1;
+    ImageIcon image1_1;
+    ImageIcon image2;
+    ImageIcon image2_1;
+    ImageIcon image3;
+    ImageIcon image3_1;
+    ImageIcon image4;
+    ImageIcon image4_1;
+
+    ArrayList<ImageIcon> storeImages;
+
 
     MyFrame(){
         this.setTitle("Memory Game");
@@ -23,25 +32,11 @@ public class MyFrame extends JFrame implements ActionListener {
         this.setSize(1000, 1000);
         this.setResizable(false);
 
-        //Creating the MenuBar and adding components
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu menu1 = new JMenu("GAME");
-        JMenu menu2 = new JMenu("Help");
-
-        menuBar.add(menu1);
-        menuBar.add(menu2);
-
-        JMenuItem menu11 = new JMenuItem("Stop");
-        JMenuItem menu22 = new JMenuItem("Reset");
-        menu1.add(menu11);
-        menu1.add(menu22);
-
         // Creating the panel2 to store buttons
-
         panel2 = new JPanel();
         panel2.setLayout(new GridLayout(2, 4));
 
+        randomlyChooseImages();     // tutaj wywoływana jest ta metoda, poniewaz w niej wywolywana jest metoda, ktora dodaje przyciski do panel2 ZAPISZ TO JAKOS PO POLSKU W ANGIELSKIM JEZYKU XD
 
         //Creating the panel1 at bottom and adding components
         JPanel panel1 = new JPanel(); // the panel is not visible in output
@@ -57,22 +52,16 @@ public class MyFrame extends JFrame implements ActionListener {
         panel1.setSize(new Dimension(1200, 100));
         panel1.add(label); // Components Added using Flow Layout
         panel1.add(tf);
-        panel1.add(ta);
         panel1.add(start);
         panel1.add(timeLabel);
         panel1.add(timeField);
         String input = tf.getText();
-        String timeCouting = tf.getText();
         System.out.println(input);
-        System.out.println(timeCouting);
 
         //Adding Components to the frame.
         this.getContentPane().add(BorderLayout.SOUTH, panel1);
         this.getContentPane().add(BorderLayout.CENTER, panel2);
-        this.getContentPane().add(BorderLayout.NORTH, menuBar);
         this.setVisible(true);
-
-        randomImages();
     }
 
     @Override
@@ -84,18 +73,18 @@ public class MyFrame extends JFrame implements ActionListener {
         System.out.println("Hello " + tf.getText());
     }
 
-    public void randomImages(){
+    public void randomlyChooseImages(){
         // Creating fields with images
         startImage = new ImageIcon("src/memoryGame.jpg");
 
-        ImageIcon image1 = new ImageIcon("src/sun1.jpg");
-        ImageIcon image1_1 = new ImageIcon("src/sun2.jpg");
-        ImageIcon image2 = new ImageIcon("src/storm1.jpg");
-        ImageIcon image2_1 = new ImageIcon("src/storm2.jpg");
-        ImageIcon image3 = new ImageIcon("src/nature1.jpg");
-        ImageIcon image3_1 = new ImageIcon("src/nature2.jpg");
-        ImageIcon image4 = new ImageIcon("src/fire1.jpg");
-        ImageIcon image4_1 = new ImageIcon("src/fire2.jpg");
+        image1 = new ImageIcon("src/sun1.jpg");
+        image1_1 = new ImageIcon("src/sun2.jpg");
+        image2 = new ImageIcon("src/storm1.jpg");
+        image2_1 = new ImageIcon("src/storm2.jpg");
+        image3 = new ImageIcon("src/nature1.jpg");
+        image3_1 = new ImageIcon("src/nature2.jpg");
+        image4 = new ImageIcon("src/fire1.jpg");
+        image4_1 = new ImageIcon("src/fire2.jpg");
 
         ArrayList<ImageIcon> images = new ArrayList<>();
 
@@ -109,23 +98,21 @@ public class MyFrame extends JFrame implements ActionListener {
         images.add(image4_1);
 
         // array to store randomly chosen images
-        ArrayList<ImageIcon> storeImages = new ArrayList<>();
+        storeImages = new ArrayList<>();
 
         // Randomly saving images to buttons
 
         Random random = new Random();
         for(int i = 0; i < 8; i++) {
             int n = random.nextInt(images.size());
-            //button[i] = new JButton(images.get(n));
             storeImages.add(images.get(n));
             images.remove(n);
         }
 
-        setUpButtons(storeImages);
-
+        setUpButtons();
     }
 
-    public void setUpButtons(ArrayList<ImageIcon> storeImages){
+    public void setUpButtons(){
 
         // Creating the buttons
         // List with our buttons -- to draw buttons
@@ -146,6 +133,7 @@ public class MyFrame extends JFrame implements ActionListener {
         button[0].addActionListener(e -> {
             button[0].setIcon(storeImages.get(0));
             System.out.println("button 1 is pressed");
+            System.out.println(storeImages.get(0));
         });
         button[1].addActionListener(e -> {
             button[1].setIcon(storeImages.get(1));
@@ -175,6 +163,5 @@ public class MyFrame extends JFrame implements ActionListener {
             button[7].setIcon(storeImages.get(7));
             System.out.println("button 1 is pressed");
         });
-
     }
 }
