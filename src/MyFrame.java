@@ -1,21 +1,24 @@
-import javax.imageio.ImageIO;
+import org.w3c.dom.ls.LSOutput;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class MyFrame extends JFrame implements ActionListener {
-    public static JButton[] button;
+
     JTextField tf;
+    JTextArea ta;
     JPanel panel2;
+    ImageIcon startImage;
+    long time = 0;
 
     // Here we have implemented a window with the draw layout of card
 
-    MyFrame(String name){
-        this.setTitle(name);
+    MyFrame(){
+        this.setTitle("Memory Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 1000);
         this.setResizable(false);
@@ -37,8 +40,53 @@ public class MyFrame extends JFrame implements ActionListener {
         // Creating the panel2 to store buttons
 
         panel2 = new JPanel();
+        panel2.setLayout(new GridLayout(2, 4));
 
+
+        //Creating the panel1 at bottom and adding components
+        JPanel panel1 = new JPanel(); // the panel is not visible in output
+        JLabel label = new JLabel("Enter your name");
+        JLabel timeLabel = new JLabel("Your current time");
+        tf = new JTextField(10); // accepts up to 10 characters
+        JTextField timeField = new JTextField(20);      // NA PRZYSZLE LICZENIE CZASU
+        JButton start = new JButton("START");
+        ta = new JTextArea(2, 10);
+
+        start.addActionListener(this);
+
+        panel1.setSize(new Dimension(1200, 100));
+        panel1.add(label); // Components Added using Flow Layout
+        panel1.add(tf);
+        panel1.add(ta);
+        panel1.add(start);
+        panel1.add(timeLabel);
+        panel1.add(timeField);
+        String input = tf.getText();
+        String timeCouting = tf.getText();
+        System.out.println(input);
+        System.out.println(timeCouting);
+
+        //Adding Components to the frame.
+        this.getContentPane().add(BorderLayout.SOUTH, panel1);
+        this.getContentPane().add(BorderLayout.CENTER, panel2);
+        this.getContentPane().add(BorderLayout.NORTH, menuBar);
+        this.setVisible(true);
+
+        randomImages();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Thread thread = new Thread(new TimeCounter());
+        thread.start();
+        time = System.currentTimeMillis();
+
+        System.out.println("Hello " + tf.getText());
+    }
+
+    public void randomImages(){
         // Creating fields with images
+        startImage = new ImageIcon("src/memoryGame.jpg");
 
         ImageIcon image1 = new ImageIcon("src/sun1.jpg");
         ImageIcon image1_1 = new ImageIcon("src/sun2.jpg");
@@ -60,6 +108,25 @@ public class MyFrame extends JFrame implements ActionListener {
         images.add(image4);
         images.add(image4_1);
 
+        // array to store randomly chosen images
+        ArrayList<ImageIcon> storeImages = new ArrayList<>();
+
+        // Randomly saving images to buttons
+
+        Random random = new Random();
+        for(int i = 0; i < 8; i++) {
+            int n = random.nextInt(images.size());
+            //button[i] = new JButton(images.get(n));
+            storeImages.add(images.get(n));
+            images.remove(n);
+        }
+
+        setUpButtons(storeImages);
+
+    }
+
+    public void setUpButtons(ArrayList<ImageIcon> storeImages){
+
         // Creating the buttons
         // List with our buttons -- to draw buttons
 
@@ -67,89 +134,47 @@ public class MyFrame extends JFrame implements ActionListener {
 
         for (int i = 0; i < 8; i++) {
 
-            button[i] = new JButton("");
+            button[i] = new JButton(startImage);
             button[i].setPreferredSize(new Dimension(130, 150));
 
         }
-
-        // Randomly saving images to buttons
-        
-        Random random = new Random();
-        for(int i = 0; i < 8; i++) {
-            int n = random.nextInt(images.size());
-            button[i] = new JButton(images.get(n));
-            images.remove(n);
-        }
-
-        // The panel2 settings
-
-        panel2.setLayout(new GridLayout(2, 4));
 
         for(int i = 0; i < 8; i++) {
             panel2.add(button[i]);
         }
 
-        // trying to change an image if button is pressed
-
-        button[1].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button[1].setIcon(new ImageIcon("src/sun1.jpg"));
-                System.out.println("button 1 is pressed");
-            }
+        button[0].addActionListener(e -> {
+            button[0].setIcon(storeImages.get(0));
+            System.out.println("button 1 is pressed");
         });
-        button[2].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button[2].setIcon(new ImageIcon("src/sun1.jpg"));
-                System.out.println("button 1 is pressed");
-            }
-        });button[3].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button[3].setIcon(new ImageIcon("src/sun1.jpg"));
-                System.out.println("button 1 is pressed");
-            }
-        });button[4].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button[4].setIcon(new ImageIcon("src/sun1.jpg"));
-                System.out.println("button 1 is pressed");
-            }
+        button[1].addActionListener(e -> {
+            button[1].setIcon(storeImages.get(1));
+            System.out.println("button 1 is pressed");
+        });
+        button[2].addActionListener(e -> {
+            button[2].setIcon(storeImages.get(2));
+            System.out.println("button 1 is pressed");
+        });
+        button[3].addActionListener(e -> {
+            button[3].setIcon(storeImages.get(3));
+            System.out.println("button 1 is pressed");
+        });
+        button[4].addActionListener(e -> {
+            button[4].setIcon(storeImages.get(4));
+            System.out.println("button 1 is pressed");
+        });
+        button[5].addActionListener(e -> {
+            button[5].setIcon(storeImages.get(5));
+            System.out.println("button 1 is pressed");
+        });
+        button[6].addActionListener(e -> {
+            button[6].setIcon(storeImages.get(6));
+            System.out.println("button 1 is pressed");
+        });
+        button[7].addActionListener(e -> {
+            button[7].setIcon(storeImages.get(7));
+            System.out.println("button 1 is pressed");
         });
 
-
-        //Creating the panel1 at bottom and adding components
-        JPanel panel1 = new JPanel(); // the panel is not visible in output
-        JLabel label = new JLabel("Enter your name");
-        JLabel timeLabel = new JLabel("Your current time");
-        tf = new JTextField(10); // accepts up to 10 characters
-        JTextField timeField = new JTextField(20);      // NA PRZYSZLE LICZENIE CZASU
-        JButton start = new JButton("START");
-
-        start.addActionListener(this);
-
-        panel1.setSize(new Dimension(1200, 100));
-        panel1.add(label); // Components Added using Flow Layout
-        panel1.add(tf);
-        panel1.add(start);
-        panel1.add(timeLabel);
-        panel1.add(timeField);
-        String input = tf.getText();
-        String timeCouting = tf.getText();
-        System.out.println(input);
-        System.out.println(timeCouting);
-
-        //Adding Components to the frame.
-        this.getContentPane().add(BorderLayout.SOUTH, panel1);
-        this.getContentPane().add(BorderLayout.CENTER, panel2);
-        this.getContentPane().add(BorderLayout.NORTH, menuBar);
-        this.setVisible(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Thread thread = new Thread(new GameLogic());
-        thread.start();
     }
 }
