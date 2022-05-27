@@ -10,9 +10,12 @@ public class MyFrame extends JFrame implements ActionListener {
     JTextField tf;
     JTextArea ta;
     JPanel panel2;
+    static JButton[] button;
 
+    // TIME COUNTING
     long time = 0;
 
+    // IMAGES
     ImageIcon startImage;
     ImageIcon image1;
     ImageIcon image1_1;
@@ -23,14 +26,17 @@ public class MyFrame extends JFrame implements ActionListener {
     ImageIcon image4;
     ImageIcon image4_1;
 
-    ArrayList<ImageIcon> storeImages;
+    static ArrayList<ImageIcon> storeImages;
+
+    // FLAGS
+    static int flag = 0;
 
 
     MyFrame(){
         this.setTitle("Memory Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 1000);
-        this.setResizable(false);
+        //this.setResizable(false);
 
         // Creating the panel2 to store buttons
         panel2 = new JPanel();
@@ -108,16 +114,15 @@ public class MyFrame extends JFrame implements ActionListener {
             storeImages.add(images.get(n));
             images.remove(n);
         }
-
-        setUpButtons();
+        setUpButtonsEasy();
     }
 
-    public void setUpButtons(){
+    public void setUpButtonsEasy(){
 
         // Creating the buttons
         // List with our buttons -- to draw buttons
 
-        JButton[] button = new JButton[8];
+        button = new JButton[8];
 
         for (int i = 0; i < 8; i++) {
 
@@ -125,43 +130,45 @@ public class MyFrame extends JFrame implements ActionListener {
             button[i].setPreferredSize(new Dimension(130, 150));
 
         }
-
         for(int i = 0; i < 8; i++) {
             panel2.add(button[i]);
         }
+        showImage();
+    }
 
-        button[0].addActionListener(e -> {
+    public void showImage(){
+
+        button[0].addActionListener(e0 -> {
             button[0].setIcon(storeImages.get(0));
-            System.out.println("button 1 is pressed");
-            System.out.println(storeImages.get(0));
+            button0Clicked();
         });
-        button[1].addActionListener(e -> {
+
+        button[1].addActionListener(e1 -> {
             button[1].setIcon(storeImages.get(1));
-            System.out.println("button 1 is pressed");
+            button1Clicked();
         });
-        button[2].addActionListener(e -> {
-            button[2].setIcon(storeImages.get(2));
-            System.out.println("button 1 is pressed");
-        });
-        button[3].addActionListener(e -> {
-            button[3].setIcon(storeImages.get(3));
-            System.out.println("button 1 is pressed");
-        });
-        button[4].addActionListener(e -> {
-            button[4].setIcon(storeImages.get(4));
-            System.out.println("button 1 is pressed");
-        });
-        button[5].addActionListener(e -> {
-            button[5].setIcon(storeImages.get(5));
-            System.out.println("button 1 is pressed");
-        });
-        button[6].addActionListener(e -> {
-            button[6].setIcon(storeImages.get(6));
-            System.out.println("button 1 is pressed");
-        });
-        button[7].addActionListener(e -> {
-            button[7].setIcon(storeImages.get(7));
-            System.out.println("button 1 is pressed");
-        });
+
+        button[2].addActionListener(e2 -> button[2].setIcon(storeImages.get(2)));
+
+        button[3].addActionListener(e3 -> button[3].setIcon(storeImages.get(3)));
+
+        button[4].addActionListener(e4 -> button[4].setIcon(storeImages.get(4)));
+
+        button[5].addActionListener(e5 -> button[5].setIcon(storeImages.get(5)));
+
+        button[6].addActionListener(e6 -> button[6].setIcon(storeImages.get(6)));
+
+        button[7].addActionListener(e7 -> button[7].setIcon(storeImages.get(7)));
+
+    }
+
+    public void button0Clicked() {
+        System.out.println("no kurwa 0");
+
+    }
+
+    public void button1Clicked() {
+        System.out.println("no kurwa 1");
+
     }
 }
