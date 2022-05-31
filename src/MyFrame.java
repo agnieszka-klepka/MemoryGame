@@ -2,15 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
-public class MyFrame extends JFrame implements ActionListener {
+class MyFrame extends JFrame implements ActionListener {
 
     JTextField tf;
     JTextArea ta;
     JPanel panel2;
     static JButton[] button;
+    JButton start;
 
     // TIME COUNTING
     long time = 0;
@@ -28,8 +28,12 @@ public class MyFrame extends JFrame implements ActionListener {
 
     static ArrayList<ImageIcon> storeImages;
 
-    // FLAGS
-    static int flag = 0;
+
+    Boolean shown = true;
+    //Boolean gameWin = false;
+
+    int temp;
+    int temp2;
 
 
     MyFrame(){
@@ -42,7 +46,7 @@ public class MyFrame extends JFrame implements ActionListener {
         panel2 = new JPanel();
         panel2.setLayout(new GridLayout(2, 4));
 
-        randomlyChooseImages();     // tutaj wywoływana jest ta metoda, poniewaz w niej wywolywana jest metoda, ktora dodaje przyciski do panel2 ZAPISZ TO JAKOS PO POLSKU W ANGIELSKIM JEZYKU XD
+        randomlyChooseImages();
 
         //Creating the panel1 at bottom and adding components
         JPanel panel1 = new JPanel(); // the panel is not visible in output
@@ -50,7 +54,7 @@ public class MyFrame extends JFrame implements ActionListener {
         JLabel timeLabel = new JLabel("Your current time");
         tf = new JTextField(10); // accepts up to 10 characters
         JTextField timeField = new JTextField(20);      // NA PRZYSZLE LICZENIE CZASU
-        JButton start = new JButton("START");
+        start = new JButton("START");
         ta = new JTextArea(2, 10);
 
         start.addActionListener(this);
@@ -64,19 +68,33 @@ public class MyFrame extends JFrame implements ActionListener {
         String input = tf.getText();
         System.out.println(input);
 
-        //Adding Components to the frame.
+        //Adding Components to the frame
         this.getContentPane().add(BorderLayout.SOUTH, panel1);
         this.getContentPane().add(BorderLayout.CENTER, panel2);
         this.setVisible(true);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        Thread thread = new Thread(new TimeCounter());
-        thread.start();
-        time = System.currentTimeMillis();
+    public void actionPerformed(ActionEvent click) {
+        Object source = click.getSource();
 
-        System.out.println("Hello " + tf.getText());
+        if(source == start){
+            System.out.println("kurwa start wcisniety " + tf.getText());
+        }
+
+        /////////////////////////////////////////////////////////////////
+        for(int i =0;i<8;i++) {
+            if(source == button[i]) {
+                if (shown) {
+                    switchSpot(i);
+                    temp = i;
+                } else {
+                    switchSpot(i);
+                }
+            }
+        }
+        /////////////////////////////////////////////////////////////////
+
     }
 
     public void randomlyChooseImages(){
@@ -137,38 +155,25 @@ public class MyFrame extends JFrame implements ActionListener {
     }
 
     public void showImage(){
-
-        button[0].addActionListener(e0 -> {
-            button[0].setIcon(storeImages.get(0));
-            button0Clicked();
-        });
-
-        button[1].addActionListener(e1 -> {
-            button[1].setIcon(storeImages.get(1));
-            button1Clicked();
-        });
-
-        button[2].addActionListener(e2 -> button[2].setIcon(storeImages.get(2)));
-
-        button[3].addActionListener(e3 -> button[3].setIcon(storeImages.get(3)));
-
-        button[4].addActionListener(e4 -> button[4].setIcon(storeImages.get(4)));
-
-        button[5].addActionListener(e5 -> button[5].setIcon(storeImages.get(5)));
-
-        button[6].addActionListener(e6 -> button[6].setIcon(storeImages.get(6)));
-
-        button[7].addActionListener(e7 -> button[7].setIcon(storeImages.get(7)));
-
+        for(int i = 0;i < 8; i++) {
+            button[i].addActionListener(this);
+        }
+    }
+    public void hideField(){
+        for(int i=0;i<8;i++){
+            button[i].setIcon(startImage);
+        }
+        shown=true;
     }
 
-    public void button0Clicked() {
-        System.out.println("no kurwa 0");
-
-    }
-
-    public void button1Clicked() {
-        System.out.println("no kurwa 1");
-
+    public void switchSpot(int i) {
+        if(shown){
+            button[i].setIcon(storeImages.get(i));
+            shown = false;
+        } else {
+            button[i].setIcon(startImage);
+            shown = true;
+        }
     }
 }
+
