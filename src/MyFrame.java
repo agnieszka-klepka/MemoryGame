@@ -13,7 +13,7 @@ class MyFrame extends JFrame implements ActionListener {
     JButton start;
 
     // TIME COUNTING
-    long time = 0;
+    // long time = 0;
 
     // IMAGES
     ImageIcon startImage;
@@ -30,10 +30,9 @@ class MyFrame extends JFrame implements ActionListener {
 
 
     Boolean shown = true;
-    //Boolean gameWin = false;
+    // Boolean gameWin = false;
 
-    int temp;
-    int temp2;
+    int temp = 0;   // moves counter
 
 
     MyFrame(){
@@ -82,12 +81,16 @@ class MyFrame extends JFrame implements ActionListener {
             System.out.println("kurwa start wcisniety " + tf.getText());
         }
 
+
         /////////////////////////////////////////////////////////////////
         for(int i =0;i<8;i++) {
             if(source == button[i]) {
                 if (shown) {
-                    switchSpot(i);
-                    temp = i;
+                    if(temp<2){
+                        switchSpot(i);
+                    } else {
+                        hideField();
+                    }
                 } else {
                     switchSpot(i);
                 }
@@ -133,6 +136,7 @@ class MyFrame extends JFrame implements ActionListener {
             images.remove(n);
         }
         setUpButtonsEasy();
+        compareImages(storeImages);
     }
 
     public void setUpButtonsEasy(){
@@ -163,17 +167,67 @@ class MyFrame extends JFrame implements ActionListener {
         for(int i=0;i<8;i++){
             button[i].setIcon(startImage);
         }
+        temp = 0;
         shown=true;
     }
 
-    public void switchSpot(int i) {
+    public void switchSpot(int i){
         if(shown){
             button[i].setIcon(storeImages.get(i));
-            shown = false;
+            temp++;
+            if(temp == 2) {
+                compareButtons();
+            }
         } else {
             button[i].setIcon(startImage);
             shown = true;
         }
+    }
+    public void compareImages(ArrayList<ImageIcon> storeImages){
+        System.out.println(storeImages);
+
+        ArrayList<String> orderedImages = new ArrayList<String>();
+
+        for(int i = 0; i < 8; i++){
+            if(storeImages.get(i) == image1){
+                orderedImages.add(i, "sun");
+            }else if (storeImages.get(i) == image1_1){
+                orderedImages.add(i, "sun");
+            }
+            if(storeImages.get(i) == image2){
+                orderedImages.add(i, "storm");
+            }else if (storeImages.get(i) == image2_1){
+                orderedImages.add(i, "storm");
+            }
+            if(storeImages.get(i) == image3){
+                orderedImages.add(i, "nature");
+            }else if (storeImages.get(i) == image3_1){
+                orderedImages.add(i, "nature");
+            }
+            if(storeImages.get(i) == image4){
+                orderedImages.add(i, "fire");
+            }else if (storeImages.get(i) == image4_1){
+                orderedImages.add(i, "fire");
+            }
+        }
+        System.out.println(orderedImages);  // mamy posegregowane, gdzie mamy jakie symbole --> teraz sobie to mozemy porownac --> na tej tablicy pracowac
+
+    }
+
+    public void compareButtons(){
+        System.out.println("okay tutaj bedziemy pracować");
+
+        // jak porównać obrazki na dwóch buttonach
+        // mamy moze trzeba oddzielną funkcje???, ktora bedzie nam parowała te obrazki
+        // to nie jest w sumie zły plan
+        // i tutaj tylko sprawdzamy czy te buttony są w dobrej parze
+        // trzeba jeszcze jakies zmienne, ktore beda oznakować buttony
+        // ogolnie teraz dazymy, żeby kod działał
+        // ale jestem świadoma, że to nie jest elegancko
+
+
+
+        // if()
     }
 }
 
