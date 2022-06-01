@@ -27,7 +27,10 @@ class MyFrame extends JFrame implements ActionListener {
     ImageIcon image4_1;
 
     static ArrayList<ImageIcon> storeImages;
+    ArrayList<String> orderedImages;
 
+    int firstChosenButton;
+    int secondChosenButton;
 
     Boolean shown = true;
     // Boolean gameWin = false;
@@ -175,7 +178,9 @@ class MyFrame extends JFrame implements ActionListener {
         if(shown){
             button[i].setIcon(storeImages.get(i));
             temp++;
+            if (temp == 1) firstChosenButton = i;   // pierwszy raz przechodzi petle, jak karta jest wybrana
             if(temp == 2) {
+                secondChosenButton = i;             // drugi raz przechodzi petle i zapisuje numerek drugiej karty --> i teraz uważaj
                 compareButtons();
             }
         } else {
@@ -186,7 +191,7 @@ class MyFrame extends JFrame implements ActionListener {
     public void compareImages(ArrayList<ImageIcon> storeImages){
         System.out.println(storeImages);
 
-        ArrayList<String> orderedImages = new ArrayList<String>();
+        orderedImages = new ArrayList<>();
 
         for(int i = 0; i < 8; i++){
             if(storeImages.get(i) == image1){
@@ -210,21 +215,33 @@ class MyFrame extends JFrame implements ActionListener {
                 orderedImages.add(i, "fire");
             }
         }
-        System.out.println(orderedImages);  // mamy posegregowane, gdzie mamy jakie symbole --> teraz sobie to mozemy porownac --> na tej tablicy pracowac
-
+        // System.out.println(orderedImages);  // mamy posegregowane, gdzie mamy jakie symbole --> teraz sobie to mozemy porownac --> na tej tablicy pracowac
     }
 
     public void compareButtons(){
-        System.out.println("okay tutaj bedziemy pracować");
 
         // jak porównać obrazki na dwóch buttonach
-        // mamy moze trzeba oddzielną funkcje???, ktora bedzie nam parowała te obrazki
+        // mamy moze trzeba oddzielną funkcje???, ktora bedzie nam parowała te obrazki --> dobrze, zrobiłam to
         // to nie jest w sumie zły plan
         // i tutaj tylko sprawdzamy czy te buttony są w dobrej parze
+
+        // TO DO
         // trzeba jeszcze jakies zmienne, ktore beda oznakować buttony
         // ogolnie teraz dazymy, żeby kod działał
         // ale jestem świadoma, że to nie jest elegancko
 
+        if(Objects.equals(orderedImages.get(firstChosenButton), orderedImages.get(secondChosenButton))){
+
+            button[firstChosenButton].setIcon(storeImages.get(firstChosenButton));  // trzeba by teraz zablokować jakos ten klawisz
+            button[secondChosenButton].setIcon(storeImages.get(secondChosenButton));
+
+            // blokujemy wybrane buttony --> JAK TO ZROBIC ŁADNIEJ???
+            button[firstChosenButton].setEnabled(false);
+            button[secondChosenButton].setEnabled(false);
+
+            // TERAZ TRZEBA JESZCZE SPRAWDZIC ZWYCIESTWO
+
+        }
 
 
         // if()
