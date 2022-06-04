@@ -18,9 +18,6 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
     static JButton[] button;
     JButton start;
 
-    // TIME COUNTING
-    // long time = 0;
-
     // IMAGES
     ImageIcon startImage;
     ImageIcon image1;
@@ -43,12 +40,10 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
 
     int temp = 0;   // moves counter
 
-
     MyFrame(){
         this.setTitle("Memory Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 1000);
-        //this.setResizable(false);
 
         // Creating the panel2 to store buttons
         panel2 = new JPanel();
@@ -68,7 +63,6 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
         panel1.add(timeLabel);
         panel1.add(timeField);
 
-
         //Adding Components to the frame
         this.getContentPane().add(BorderLayout.SOUTH, panel1);
         this.getContentPane().add(BorderLayout.CENTER, panel2);
@@ -80,10 +74,10 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
         Object source = click.getSource();
 
         /////////////////////////////////////////////////////////////////
-        for(int i =0;i<8;i++) {
-            if(source == button[i]) {
+        for (int i = 0; i < 8;i++) {
+            if (source == button[i]) {
                 if (shown) {
-                    if(temp<2){
+                    if (temp<2){
                         switchSpot(i);
                     } else {
                         hideField();
@@ -94,7 +88,6 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
             }
         }
         /////////////////////////////////////////////////////////////////
-
     }
 
     public void randomlyChooseImages(){
@@ -289,7 +282,5 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
         welcome.add(panel);
         welcome.getContentPane().add(BorderLayout.CENTER, panel);
         welcome.setVisible(true);
-
     }
 }
-
