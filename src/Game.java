@@ -4,19 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-// TO DO
-// dwa poziomy trudności --> menu bar
-// to klikanie jeszcze raz przed nastepnym ruchem trzeba zlikwidować
-// liczenie punktów
-// pokolorowac obrazki
-// wymyslic cos z ta druga klasa !!!!!!!
+class Game extends JFrame implements ActionListener, Runnable {
 
-class MyFrame extends JFrame implements ActionListener, Runnable{
-
-    JTextField tf;
     JPanel panel2;
+    JPanel panel1;
     static JButton[] button;
-    JButton start;
 
     // IMAGES
     ImageIcon startImage;
@@ -38,9 +30,10 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
 
     Boolean shown = true;
 
+    int size = 8;
     int temp = 0;   // moves counter
 
-    MyFrame(){
+    Game(String name){
         this.setTitle("Memory Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 1000);
@@ -52,16 +45,11 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
         randomlyChooseImages();
 
         //Creating the panel1 at bottom and adding components
-        JPanel panel1 = new JPanel(); // the panel is not visible in output
-        JLabel label = new JLabel("Enter your name");
-        JLabel timeLabel = new JLabel("Score");
-        JTextField timeField = new JTextField(20);      // NA PRZYSZLE LICZENIE CZASU
-
+        panel1 = new JPanel(); // the panel is not visible in output
+        JLabel label = new JLabel("Now " + name + " is playing");
 
         panel1.setSize(new Dimension(1200, 100));
         panel1.add(label); // Components Added using Flow Layout
-        panel1.add(timeLabel);
-        panel1.add(timeField);
 
         //Adding Components to the frame
         this.getContentPane().add(BorderLayout.SOUTH, panel1);
@@ -74,7 +62,7 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
         Object source = click.getSource();
 
         /////////////////////////////////////////////////////////////////
-        for (int i = 0; i < 8;i++) {
+        for (int i = 0; i < size;i++) {
             if (source == button[i]) {
                 if (shown) {
                     if (temp<2){
@@ -118,9 +106,8 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
         storeImages = new ArrayList<>();
 
         // Randomly saving images to buttons
-
         Random random = new Random();
-        for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < size; i++) {
             int n = random.nextInt(images.size());
             storeImages.add(images.get(n));
             images.remove(n);
@@ -134,27 +121,27 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
         // Creating the buttons
         // List with our buttons -- to draw buttons
 
-        button = new JButton[8];
+        button = new JButton[size];
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < size; i++) {
 
             button[i] = new JButton(startImage);
             button[i].setPreferredSize(new Dimension(130, 150));
 
         }
-        for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < size; i++) {
             panel2.add(button[i]);
         }
         showImage();
     }
 
     public void showImage(){
-        for(int i = 0;i < 8; i++) {
+        for(int i = 0;i < size; i++) {
             button[i].addActionListener(this);
         }
     }
     public void hideField(){
-        for(int i=0;i<8;i++){
+        for(int i = 0;i < size; i++){
             button[i].setIcon(startImage);
         }
         temp = 0;
@@ -179,7 +166,7 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
 
         orderedImages = new ArrayList<>();
 
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < size; i++){
             if(storeImages.get(i) == image1){
                 orderedImages.add(i, "sun");
             }else if (storeImages.get(i) == image1_1){
@@ -201,22 +188,11 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
                 orderedImages.add(i, "fire");
             }
         }
-        // System.out.println(orderedImages);  // mamy posegregowane, gdzie mamy jakie symbole --> teraz sobie to mozemy porownac --> na tej tablicy pracowac
     }
 
-    public void compareButtons(){
+    public void compareButtons() {
 
-        // jak porównać obrazki na dwóch buttonach
-        // mamy moze trzeba oddzielną funkcje???, ktora bedzie nam parowała te obrazki --> dobrze, zrobiłam to
-        // to nie jest w sumie zły plan
-        // i tutaj tylko sprawdzamy czy te buttony są w dobrej parze
-
-        // TO DO
-        // trzeba jeszcze jakies zmienne, ktore beda oznakować buttony
-        // ogolnie teraz dazymy, żeby kod działał
-        // ale jestem świadoma, że to nie jest elegancko
-
-        if(Objects.equals(orderedImages.get(firstChosenButton), orderedImages.get(secondChosenButton))){
+        if (Objects.equals(orderedImages.get(firstChosenButton), orderedImages.get(secondChosenButton))){
 
             // blokujemy wybrane buttony --> JAK TO ZROBIC ŁADNIEJ???
             button[firstChosenButton].setEnabled(false);
@@ -235,14 +211,14 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
             winningFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             winningFrame.setSize(200, 200);
 
-            JLabel winningLabel = new JLabel("Congratulation " + tf.getText());
+            JLabel winningLabel = new JLabel("Congratulation");
             JPanel winningPanel = new JPanel();
 
             JButton button = new JButton("PLAY AGAIN");
             button.addActionListener(e -> {
                 this.dispose();
                 winningFrame.dispose();
-                new MyFrame();
+                new StartWindow();
             });
 
             winningPanel.add(winningLabel);
@@ -256,31 +232,6 @@ class MyFrame extends JFrame implements ActionListener, Runnable{
 
     @Override
     public void run() {
-        JFrame welcome = new JFrame("WELCOME");
-        welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        welcome.setSize(500, 500);
-
-        JPanel panel = new JPanel();
-        start = new JButton("START");
-
-        tf = new JTextField(10); // accepts up to 10 characters
-        panel.add(tf);
-        String input = tf.getText();
-        System.out.println(input);
-
-        JLabel label = new JLabel("Enter your name: ");
-
-        start.addActionListener(e -> {
-//            System.out.println("kurwa start wcisniety " + tf.getText());
-            welcome.dispose();
-        });
-
-        panel.add(label);
-        panel.add(tf);
-        panel.add(start);
-
-        welcome.add(panel);
-        welcome.getContentPane().add(BorderLayout.CENTER, panel);
-        welcome.setVisible(true);
+        System.out.println("MEMORY GAME MI AMIGOS");
     }
 }
