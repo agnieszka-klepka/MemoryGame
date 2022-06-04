@@ -4,10 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-class MyFrame extends JFrame implements ActionListener {
+// TO DO
+// dwa poziomy trudności --> menu bar
+// to klikanie jeszcze raz przed nastepnym ruchem trzeba zlikwidować
+// liczenie punktów
+// pokolorowac obrazki
+// wymyslic cos z ta druga klasa !!!!!!!
+
+class MyFrame extends JFrame implements ActionListener, Runnable{
 
     JTextField tf;
-    JTextArea ta;
     JPanel panel2;
     static JButton[] button;
     JButton start;
@@ -31,9 +37,9 @@ class MyFrame extends JFrame implements ActionListener {
 
     int firstChosenButton;
     int secondChosenButton;
+    int goodMoves = 0;
 
     Boolean shown = true;
-    // Boolean gameWin = false;
 
     int temp = 0;   // moves counter
 
@@ -53,22 +59,15 @@ class MyFrame extends JFrame implements ActionListener {
         //Creating the panel1 at bottom and adding components
         JPanel panel1 = new JPanel(); // the panel is not visible in output
         JLabel label = new JLabel("Enter your name");
-        JLabel timeLabel = new JLabel("Your current time");
-        tf = new JTextField(10); // accepts up to 10 characters
+        JLabel timeLabel = new JLabel("Score");
         JTextField timeField = new JTextField(20);      // NA PRZYSZLE LICZENIE CZASU
-        start = new JButton("START");
-        ta = new JTextArea(2, 10);
 
-        start.addActionListener(this);
 
         panel1.setSize(new Dimension(1200, 100));
         panel1.add(label); // Components Added using Flow Layout
-        panel1.add(tf);
-        panel1.add(start);
         panel1.add(timeLabel);
         panel1.add(timeField);
-        String input = tf.getText();
-        System.out.println(input);
+
 
         //Adding Components to the frame
         this.getContentPane().add(BorderLayout.SOUTH, panel1);
@@ -79,11 +78,6 @@ class MyFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent click) {
         Object source = click.getSource();
-
-        if(source == start){
-            System.out.println("kurwa start wcisniety " + tf.getText());
-        }
-
 
         /////////////////////////////////////////////////////////////////
         for(int i =0;i<8;i++) {
@@ -189,7 +183,6 @@ class MyFrame extends JFrame implements ActionListener {
         }
     }
     public void compareImages(ArrayList<ImageIcon> storeImages){
-        System.out.println(storeImages);
 
         orderedImages = new ArrayList<>();
 
@@ -232,19 +225,71 @@ class MyFrame extends JFrame implements ActionListener {
 
         if(Objects.equals(orderedImages.get(firstChosenButton), orderedImages.get(secondChosenButton))){
 
-            button[firstChosenButton].setIcon(storeImages.get(firstChosenButton));  // trzeba by teraz zablokować jakos ten klawisz
-            button[secondChosenButton].setIcon(storeImages.get(secondChosenButton));
-
             // blokujemy wybrane buttony --> JAK TO ZROBIC ŁADNIEJ???
             button[firstChosenButton].setEnabled(false);
             button[secondChosenButton].setEnabled(false);
 
-            // TERAZ TRZEBA JESZCZE SPRAWDZIC ZWYCIESTWO
-
+            // TERAZ TRZEBA JESZCZE SPRAWDZIC ZWYCIESTWO !!!!!!!!!!!!
+            goodMoves++;
+            isWin();
         }
 
+    }
 
-        // if()
+    public void isWin(){
+        if(goodMoves == 4){
+            JFrame winningFrame = new JFrame("THE END");
+            winningFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            winningFrame.setSize(200, 200);
+
+            JLabel winningLabel = new JLabel("Congratulation " + tf.getText());
+            JPanel winningPanel = new JPanel();
+
+            JButton button = new JButton("PLAY AGAIN");
+            button.addActionListener(e -> {
+                this.dispose();
+                winningFrame.dispose();
+                new MyFrame();
+            });
+
+            winningPanel.add(winningLabel);
+            winningPanel.add(button);
+
+            winningFrame.getContentPane().add(BorderLayout.CENTER, winningPanel);
+            winningFrame.setVisible(true);
+
+        }
+    }
+
+    @Override
+    public void run() {
+        JFrame welcome = new JFrame("WELCOME");
+        welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        welcome.setSize(500, 500);
+
+        JPanel panel = new JPanel();
+        start = new JButton("START");
+
+        tf = new JTextField(10); // accepts up to 10 characters
+        panel.add(tf);
+        String input = tf.getText();
+        System.out.println(input);
+
+        JLabel label = new JLabel("Enter your name: ");
+
+        start.addActionListener(e -> {
+//            System.out.println("kurwa start wcisniety " + tf.getText());
+            welcome.dispose();
+        });
+
+        panel.add(label);
+        panel.add(tf);
+        panel.add(start);
+
+        welcome.add(panel);
+        welcome.getContentPane().add(BorderLayout.CENTER, panel);
+        welcome.setVisible(true);
+
     }
 }
 
